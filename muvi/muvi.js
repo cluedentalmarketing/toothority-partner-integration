@@ -13,7 +13,8 @@ var config = {
     initialLiveManifestSize: 1,
     maxLoadingDelay: 2,
     maxBufferLength: 15,
-    maxMaxBufferLength: 30
+    maxMaxBufferLength: 30,
+    capLevelToPlayerSize: true
   };
 
 
