@@ -30,6 +30,11 @@
         $sastoken = curl_exec($ch); 
         curl_close($ch);
         
+        // Don't cache if key is invalid
+        if($sastoken == "UNAUTHORIZED") {
+            die("Invalid partner key.");
+        }
+        
         // Cache the SAS token to a file
         $cached = fopen($cachefile, 'w');
         fwrite($cached, $sastoken);
