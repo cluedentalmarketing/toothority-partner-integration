@@ -92,7 +92,7 @@
         // A secondary/stream playlist is being requested. Let's assemble the request and get it from Clue.
         // This combines the static location for MÜVI assets, the specific video being requested, and the authorization token from Clue, into one request URI.
         // The request will look something like the following example:
-        // https://app.muvidental.com/muvi/stream.php?l=2&v=gum-disease&f=1080p.m3u8
+        // https://assets.muvidental.com/vid/gum-disease/1440p_h265.m3u8?sv=2017-11-09&ss=b&srt=o&sp=r&st=2019-07-11T06:22:31Z&se=2019-08-11T06:22:31Z&spr=https&sig=T9jrlNWxzzKqVMCc1cbQhGX0wPAH8m3oMgXzbuflgCQ%3D&pid=clue
         $ch = curl_init(); 
         curl_setopt($ch, CURLOPT_URL, $asseturi . $videoid . "/" . $object . $sastoken); 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
