@@ -10,7 +10,7 @@
     // This is your unique partner ID key
     $partnerKey = "{INSERT PARTNER KEY HERE}";
 
-    // Get the slug from URL variable "v" for the video being requested such as 'gum-disease' or 'dental-implant'
+    // Get the slug from URL variable "v" for the video being requested such as 'gum-disease' or 'dental-implants'
     $videoid = $_GET["v"]; 
 
     // Check URL variable "l" to determine if this a request for a primary or "master" HLS playlist or a secondary "child" playlists?
