@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018, Clue Dental Marketing Inc. All rights reserved.
+Copyright (c) 2019, Clue Dental Marketing Inc. All rights reserved.
 */
 
 // Dynamically load video and subitles
@@ -58,62 +58,60 @@ for (i = 0; i < muviplayers.length; i++) {
                 
     
     
-    
-    if(Hls.isSupported()) {
+    if (muviplayers[i].canPlayType('application/vnd.apple.mpegurl')) {
+        
+            if (isiOS == true && osVersion[1] >= 11) {
+                // Send H265 master playlist to iOS 11+ Safari
+                muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic; 
+                muviplayers[i].addEventListener('canplay', function() {
+                    // muviplayers[i].play();
+                });
+                // document.getElementById("infodiv").innerHTML = "Native H.265 (A)";
+            } else if (isMac == true && osVersion[1] >= 13) {
+                // Send H265 master playlist to Mac OS X 13+ Safari
+                muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic; 
+                muviplayers[i].addEventListener('canplay', function() {
+                    // muviplayers[i].play();
+                });
+                // document.getElementById("infodiv").innerHTML = "Native H.265 (B)";
+            } else {
+                // Send H264 master playlist to older iDevices
+                muviplayers[i].src = streamPHP + '?l=1&v=' + videotopic; 
+                muviplayers[i].addEventListener('canplay', function() {
+                    // muviplayers[i].play();
+                });
+                // document.getElementById("infodiv").innerHTML = "Native H.264 (C)";
+            }
+            
+    } else if (Hls.isSupported()) {
         var hls = new Hls(config);
             
-        // Check if browser is Safari
+        // Check if browser is Safari. Leaving as a fallback in case the above check fails. Will test more and possibly remove in future.
         if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1 && !window.MSStream) {
             
             if (isiOS == true && osVersion[1] >= 11) {
                 // Send H265 master playlist to iOS 11+ Safari
                 hls.loadSource(streamPHP + '?l=1&c=hevc&v=' + videotopic);
-                // document.getElementById("infodiv").innerHTML = "hls.js H.265";
+                // document.getElementById("infodiv").innerHTML = "hls.js H.265 (D)";
             } else if (isMac == true && osVersion[1] >= 13) {
                 // Send H265 master playlist to Mac OS X 13+ Safari
                 hls.loadSource(streamPHP + '?l=1&c=hevc&v=' + videotopic);
-                // document.getElementById("infodiv").innerHTML = "hls.js H.265";
+                // document.getElementById("infodiv").innerHTML = "hls.js H.265 (E)";
             } else {
                 // Send H264 master playlist to older iDevices
                 hls.loadSource(streamPHP + '?l=1&&v=' + videotopic);
-                // document.getElementById("infodiv").innerHTML = "hls.js H.265";
+                // document.getElementById("infodiv").innerHTML = "hls.js H.265 (F)";
             }
             
         } else {
             // Send H264 master playlist to everyone else
             hls.loadSource(streamPHP + '?l=1&v=' + videotopic);
-            // document.getElementById("infodiv").innerHTML = "hls.js H.264";
+            // document.getElementById("infodiv").innerHTML = "hls.js H.264 (G)";
         }
         hls.attachMedia(muviplayers[i]);
         hls.on(Hls.Events.MANIFEST_PARSED,function() {
             // video.play();
         });
-    } else if (muviplayers[i].canPlayType('application/vnd.apple.mpegurl')) {
-        
-       
-            if (isiOS == true && osVersion[1] >= 11) {
-                // Send H265 master playlist to iOS 11+ Safari
-                muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic; 
-                muviplayers[i].addEventListener('canplay', function() {
-                    muviplayers[i].play();
-                });
-                // document.getElementById("infodiv").innerHTML = "Native H.265";
-            } else if (isMac == true && osVersion[1] >= 13) {
-                // Send H265 master playlist to Mac OS X 13+ Safari
-                muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic; 
-                muviplayers[i].addEventListener('canplay', function() {
-                    muviplayers[i].play();
-                });
-                // document.getElementById("infodiv").innerHTML = "Native H.265";
-            } else {
-                // Send H264 master playlist to older iDevices
-                muviplayers[i].src = streamPHP + '?l=1&v=' + videotopic; 
-                muviplayers[i].addEventListener('canplay', function() {
-                    muviplayers[i].play();
-                });
-                // document.getElementById("infodiv").innerHTML = "Native H.264";
-            }
-            
     }
     
     
