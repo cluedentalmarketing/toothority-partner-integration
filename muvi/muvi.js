@@ -46,53 +46,44 @@ for (i = 0; i < muviplayers.length; i++) {
     if (/iPad|iPhone|iPod/.test(uAgent) == true) {
         isiOS = true;
         osVersion = uAgent.match(/OS (\d+)/);
-        console.log(osVersion[1]);
     }
     // Check if Mac OS
     if (/OS X 10[_.](\d+)/.test(uAgent) == true) {
         isMac = true;
         osVersion = uAgent.match(/OS X 10[_.](\d+)/);
-        console.log(osVersion[1]);
     }
                 
     
     
     if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1 && !window.MSStream) {
-						// Safari specific code
+			// Safari specific code
             if (isiOS == true && osVersion[1] >= 11) {
                 // Send H265 master playlist to iOS 11+ Safari
                 muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
                 muviplayers[i].addEventListener('canplay', function() {
-                    // muviplayers[i].play();
+                // muviplayers[i].play();
                 });
-                // document.getElementById("infodiv").innerHTML = "Native H.265 (A)";
-								console.log('Break 1');
             } else if (isMac == true && osVersion[1] >= 13) {
                 // Send H265 master playlist to Mac OS X 13+ Safari
                 muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
                 muviplayers[i].addEventListener('canplay', function() {
                     // muviplayers[i].play();
                 });
-                // document.getElementById("infodiv").innerHTML = "Native H.265 (B)";
-								console.log('Break 2');
             } else {
                 // Send H264 master playlist to older iDevices
                 muviplayers[i].src = streamPHP + '?l=1&v=' + videotopic;
                 muviplayers[i].addEventListener('canplay', function() {
                     // muviplayers[i].play();
                 });
-                // document.getElementById("infodiv").innerHTML = "Native H.264 (C)";
-								console.log('Break 3');
             }
 
     } else if (Hls.isSupported()) {
-				// Chrome, Firefox, IE, etc...
+		// Chrome, Firefox, IE, etc...
         var hls = new Hls(config);
 
         // Send H264 master playlist to everyone else
         hls.loadSource(streamPHP + '?l=1&v=' + videotopic);
-        // document.getElementById("infodiv").innerHTML = "hls.js H.264 (G)";
-				console.log('Break 7');
+		console.log('Break 7');
 
         hls.attachMedia(muviplayers[i]);
         hls.on(Hls.Events.MANIFEST_PARSED,function() {
