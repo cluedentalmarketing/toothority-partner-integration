@@ -56,14 +56,14 @@ for (i = 0; i < muviplayers.length; i++) {
     
     if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1 && !window.MSStream) {
 			// Safari specific code
-            if (isiOS == true && osVersion[1] >= 11) {
-                // Send H265 master playlist to iOS 11+ Safari
+            if (isiOS == true && osVersion[1] >= 12) {
+                // Send H265 master playlist to iOS 12+ Safari
                 muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
                 muviplayers[i].addEventListener('canplay', function() {
                 // muviplayers[i].play();
                 });
-            } else if (isMac == true && osVersion[1] >= 13) {
-                // Send H265 master playlist to Mac OS X 13+ Safari
+            } else if (isMac == true && osVersion[1] >= 14) {
+                // Send H265 master playlist to Mac OS X 14+ Safari
                 muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
                 muviplayers[i].addEventListener('canplay', function() {
                     // muviplayers[i].play();
