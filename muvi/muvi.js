@@ -28,11 +28,10 @@ for (i = 0; i < muviplayers.length; i++) {
     
     // muviplayers[i].setAttribute("playsinline", "playsinline"); // Uncommnet to disable default full screen on mobile devices
     muviplayers[i].setAttribute("preload", "metadata");
+    muviplayers[i].setAttribute("controls", "controls");
     muviplayers[i].setAttribute("crossorigin", "anonymous");
     muviplayers[i].setAttribute("controlsList", "nodownload");
     muviplayers[i].setAttribute("oncontextmenu", "return false;");
-    muviplayers[i].setAttribute("onClick", 'if (!this.hasAttribute("controls")) {this.setAttribute("controls", "controls"); this.play();}');
-    muviplayers[i].setAttribute("ontouchstart", 'if (!this.hasAttribute("controls")) {this.setAttribute("controls", "controls"); this.play();}');
     muviplayers[i].setAttribute("poster", "https://assets.muvidental.com/img/posters/" + videotopic + ".jpg");     // Not protected, no token needed
     
     
@@ -83,7 +82,7 @@ for (i = 0; i < muviplayers.length; i++) {
 
         // Send H264 master playlist to everyone else
         hls.loadSource(streamPHP + '?l=1&v=' + videotopic);
-		console.log('Break 7');
+	console.log('Break 7');
 
         hls.attachMedia(muviplayers[i]);
         hls.on(Hls.Events.MANIFEST_PARSED,function() {
