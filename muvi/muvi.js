@@ -23,9 +23,9 @@ var config = {
 
 var i;
 for (i = 0; i < muviplayers.length; i++) {
-    
+
     var videotopic = muviplayers[i].dataset.topic;
-    
+
     // muviplayers[i].setAttribute("playsinline", "playsinline"); // Uncommnet to disable default full screen on mobile devices
     muviplayers[i].setAttribute("preload", "metadata");
     muviplayers[i].setAttribute("controls", "controls");
@@ -33,65 +33,74 @@ for (i = 0; i < muviplayers.length; i++) {
     muviplayers[i].setAttribute("controlsList", "nodownload");
     muviplayers[i].setAttribute("oncontextmenu", "return false;");
     muviplayers[i].setAttribute("poster", "https://assets.muvidental.com/img/posters/" + videotopic + ".jpg");     // Not protected, no token needed
-    
-    
-    
+
+
+
     var uAgent = navigator.userAgent;
     var isiOS = false;
     var isMac = false;
+    var isSafari = false;
+    var useHEVC = false;
+    var useHLSJS = true;
     var osVersion = "";
 
-    // Check if iOS
+    // Checks on iOS
     if (/iPad|iPhone|iPod/.test(uAgent) == true) {
         isiOS = true;
+        useHLSJS = false;
         osVersion = uAgent.match(/OS (\d+)/);
+        if (osVersion[1] >= 12) {
+          useHEVC = true;
+        }
     }
-    // Check if Mac OS
+
+    // Checks on Mac OS
     if (/OS X 10[_.](\d+)/.test(uAgent) == true) {
+        // We are on a Mac
         isMac = true;
         osVersion = uAgent.match(/OS X 10[_.](\d+)/);
+        if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1 && !window.MSStream) {
+          // Safari on Mac
+          isSafari = true;
+          useHLSJS = false;
+
+          if (osVersion[1] >= 12) {
+            // Newer Safari
+            useHEVC = true;
+          }
+        }
     }
-                
-    
-    
-    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1 && !window.MSStream) {
-			// Safari specific code
-            if (isiOS == true && osVersion[1] >= 12) {
-                // Send H265 master playlist to iOS 12+ Safari
-                muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
-                muviplayers[i].addEventListener('canplay', function() {
-                // muviplayers[i].play();
-                });
-            } else if (isMac == true && osVersion[1] >= 14) {
-                // Send H265 master playlist to Mac OS X 14+ Safari
-                muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
-                muviplayers[i].addEventListener('canplay', function() {
-                    // muviplayers[i].play();
-                });
-            } else {
-                // Send H264 master playlist to older iDevices
-                muviplayers[i].src = streamPHP + '?l=1&v=' + videotopic;
-                muviplayers[i].addEventListener('canplay', function() {
-                    // muviplayers[i].play();
-                });
-            }
 
-    } else if (Hls.isSupported()) {
-		// Chrome, Firefox, IE, etc...
-        var hls = new Hls(config);
 
-        // Send H264 master playlist to everyone else
-        hls.loadSource(streamPHP + '?l=1&v=' + videotopic);
-	console.log('Break 7');
+    //** BUILD PLAYER **//
+    if (useHEVC == true) {
+      // Send H265 master playlist to all iOS Browsers and Safari on Mac
+      muviplayers[i].src = streamPHP + '?l=1&c=hevc&v=' + videotopic;
+      muviplayers[i].addEventListener('canplay', function() {
+        // muviplayers[i].play();
+      });
+    } else if (useHLSJS == false && useHEVC == false) {
+      // Send H264 master playlist to older Safari on Mac
+      muviplayers[i].src = streamPHP + '?l=1&v=' + videotopic;
+      muviplayers[i].addEventListener('canplay', function() {
+          // muviplayers[i].play();
+      });
+    } else {
+      // Use HLSJS for everyone else
+      var hls = new Hls(config);
 
-        hls.attachMedia(muviplayers[i]);
-        hls.on(Hls.Events.MANIFEST_PARSED,function() {
-            // video.play();
-        });
+      // Send H264 playlist
+      hls.loadSource(streamPHP + '?l=1&v=' + videotopic);
+      console.log('Break 7');
+
+      hls.attachMedia(muviplayers[i]);
+      hls.on(Hls.Events.MANIFEST_PARSED,function() {
+          // video.play();
+      });
     }
-    
-    
-    
+
+
+
     // English Captions
     var enTrack = document.createElement("track");
     enTrack.kind = "captions"; // captions are for hearing impaired/accessibility
@@ -100,7 +109,7 @@ for (i = 0; i < muviplayers.length; i++) {
     enTrack.id = "EnCaptionsTrack";
     enTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/en.vtt";   // Not protected, no token needed
     muviplayers[i].appendChild(enTrack);
-    
+
     // Spanish Subtitles (for future implementation)
     // var esTrack = document.createElement("track");
     // esTrack.kind = "subtitles"; // subtitles are for foreign language speakers
@@ -109,7 +118,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // esTrack.id = "EsSubTitleTrack";
     // esTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/es.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(esTrack);
-    
+
     // French Subtitles (for future implementation)
     // var frTrack = document.createElement("track");
     // frTrack.kind = "subtitles";
@@ -118,7 +127,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // frTrack.id = "FrSubTitleTrack";
     // frTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/fr.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(frTrack);
-    
+
     // German Subtitles (for future implementation)
     // var deTrack = document.createElement("track");
     // deTrack.kind = "subtitles";
@@ -127,7 +136,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // deTrack.id = "DeSubTitleTrack";
     // deTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/de.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(deTrack);
-    
+
     // Portuguese Subtitles (for future implementation)
     // var ptTrack = document.createElement("track");
     // ptTrack.kind = "subtitles";
@@ -136,7 +145,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // ptTrack.id = "PtSubTitleTrack";
     // ptTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/pt.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(ptTrack);
-    
+
     // Hungarian Subtitles (for future implementation)
     // var huTrack = document.createElement("track");
     // huTrack.kind = "subtitles";
@@ -145,7 +154,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // huTrack.id = "HuSubTitleTrack";
     // huTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/hu.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(huTrack);
-    
+
     // Polish Subtitles (for future implementation)
     // var plTrack = document.createElement("track");
     // plTrack.kind = "subtitles";
@@ -154,7 +163,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // plTrack.id = "HuSubTitleTrack";
     // plTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/pl.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(plTrack);
-    
+
     // Russian Subtitles (for future implementation)
     // var ruTrack = document.createElement("track");
     // ruTrack.kind = "subtitles";
