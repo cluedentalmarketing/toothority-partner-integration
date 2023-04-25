@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019, Clue Dental Marketing Inc. All rights reserved.
+Copyright (c) 2023, Clue Dental Marketing Inc. All rights reserved.
 */
 
 // Dynamically load video and subitles
@@ -7,7 +7,7 @@ Copyright (c) 2019, Clue Dental Marketing Inc. All rights reserved.
 var pageScripts = document.getElementsByTagName("script"),
     myLocation = pageScripts[pageScripts.length-1].src,
     streamPHP = myLocation.replace(/[^\\/]+$/g, "stream.php"),
-    muviplayers = document.getElementsByClassName("muvi-player");
+    muviplayers = document.getElementsByClassName("toothority-player");
 
 var config = {
     initialLiveManifestSize: 1,
@@ -32,7 +32,7 @@ for (i = 0; i < muviplayers.length; i++) {
     muviplayers[i].setAttribute("crossorigin", "anonymous");
     muviplayers[i].setAttribute("controlsList", "nodownload");
     muviplayers[i].setAttribute("oncontextmenu", "return false;");
-    muviplayers[i].setAttribute("poster", "https://assets.muvidental.com/img/posters/" + videotopic + ".jpg");     // Not protected, no token needed
+    muviplayers[i].setAttribute("poster", "https://assets.toothority.com/img/posters/" + videotopic + ".jpg");     // Not protected, no token needed
 
 
 
@@ -107,7 +107,7 @@ for (i = 0; i < muviplayers.length; i++) {
     enTrack.label = "English";
     enTrack.srclang = "en";
     enTrack.id = "EnCaptionsTrack";
-    enTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/en.vtt";   // Not protected, no token needed
+    enTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/en.vtt";   // Not protected, no token needed
     muviplayers[i].appendChild(enTrack);
 
     // Spanish Subtitles (for future implementation)
@@ -116,7 +116,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // esTrack.label = "Español";
     // esTrack.srclang = "es";
     // esTrack.id = "EsSubTitleTrack";
-    // esTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/es.vtt";   // Not protected, no token needed
+    // esTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/es.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(esTrack);
 
     // French Subtitles (for future implementation)
@@ -125,7 +125,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // frTrack.label = "Français";
     // frTrack.srclang = "fr";
     // frTrack.id = "FrSubTitleTrack";
-    // frTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/fr.vtt";   // Not protected, no token needed
+    // frTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/fr.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(frTrack);
 
     // German Subtitles (for future implementation)
@@ -134,7 +134,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // deTrack.label = "Deutsch";
     // deTrack.srclang = "es";
     // deTrack.id = "DeSubTitleTrack";
-    // deTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/de.vtt";   // Not protected, no token needed
+    // deTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/de.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(deTrack);
 
     // Portuguese Subtitles (for future implementation)
@@ -143,7 +143,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // ptTrack.label = "Português";
     // ptTrack.srclang = "pt";
     // ptTrack.id = "PtSubTitleTrack";
-    // ptTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/pt.vtt";   // Not protected, no token needed
+    // ptTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/pt.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(ptTrack);
 
     // Hungarian Subtitles (for future implementation)
@@ -152,7 +152,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // huTrack.label = "Magyar";
     // huTrack.srclang = "hu";
     // huTrack.id = "HuSubTitleTrack";
-    // huTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/hu.vtt";   // Not protected, no token needed
+    // huTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/hu.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(huTrack);
 
     // Polish Subtitles (for future implementation)
@@ -161,7 +161,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // plTrack.label = "Polski";
     // plTrack.srclang = "pl";
     // plTrack.id = "HuSubTitleTrack";
-    // plTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/pl.vtt";   // Not protected, no token needed
+    // plTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/pl.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(plTrack);
 
     // Russian Subtitles (for future implementation)
@@ -170,7 +170,7 @@ for (i = 0; i < muviplayers.length; i++) {
     // ruTrack.label = "Русский";
     // ruTrack.srclang = "ru";
     // ruTrack.id = "RuSubTitleTrack";
-    // ruTrack.src = "https://assets.muvidental.com/vtt/" + videotopic + "/ru.vtt";   // Not protected, no token needed
+    // ruTrack.src = "https://assets.toothority.com/vtt/" + videotopic + "/ru.vtt";   // Not protected, no token needed
     // muviplayers[i].appendChild(ruTrack);
 
 }
